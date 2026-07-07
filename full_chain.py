@@ -13,14 +13,15 @@ from rag_chain import make_rag_chain
 
 def create_full_chain(retriever, openai_api_key=None, chat_memory=ChatMessageHistory()):
     model = get_model("ChatGPT", openai_api_key=openai_api_key)
-    system_prompt = """You are a helpful AI assistant for busy professionals trying to improve their health.
-    Use the following context and the users' chat history to help the user:
-    If you don't know the answer, just say that you don't know. 
-    
-    Context: {context}
-    
-    Question: """
+    system_prompt = """You are a helpful medical research assistant that helps researchers and students
+    quickly find and understand information from medical and clinical literature (e.g. EEG studies, cardiac research, clinical papers).
+    Use the following context and the users' chat history to help the user.
+    Only answer using the provided context. If you don't know the answer based on the context, just say that you don't know — do not guess or use outside medical knowledge.
+    Always be clear this is for research/informational purposes and not a substitute for professional medical advice.
 
+    Context: {context}
+
+    Question: """
     prompt = ChatPromptTemplate.from_messages(
         [
             ("system", system_prompt),
@@ -53,10 +54,9 @@ def main():
     chain = create_full_chain(ensemble_retriever)
 
     queries = [
-        "Generate a grocery list for my family meal plan for the next week(following 7 days). Prefer local, in-season ingredients."
-        "Create a list of estimated calorie counts and grams of carbohydrates for each meal."
+        "Summarize the key EEG frequency bands used to detect emotional states in the uploaded research.",
+        "What machine learning classifiers were compared for EEG-based emotion recognition, and which performed best?",
     ]
-
     for query in queries:
         response = ask_question(chain, query)
         console.print(Markdown(response.content))
