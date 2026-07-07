@@ -6,8 +6,11 @@ from ensemble import ensemble_retriever_from_docs
 from full_chain import create_full_chain, ask_question
 from local_loader import load_txt_files
 
-st.set_page_config(page_title="LangChain & Streamlit RAG")
-st.title("LangChain & Streamlit RAG")
+st.set_page_config(page_title="Medical Research RAG Assistant")
+st.title("Medical Research RAG Assistant")
+
+st.subheader("Ask me questions about your uploaded medical research documents")
+        show_ui(chain, "Ask me about EEG emotion recognition, cardiac studies, or any paper you've uploaded.")
 
 
 def show_ui(qa, prompt_to_user="How may I help you?"):
